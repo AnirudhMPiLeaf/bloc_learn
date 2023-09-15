@@ -18,13 +18,10 @@ class AuthenticationState extends Equatable {
   List<Object> get props => [status, user];
 
   static AuthenticationState? fromJson(Map<String, dynamic> json) {
-    var authenticationStatus = AuthenticationStatus.unknown;
     if (json['status'] != null) {
       if (json['status'].toString() == '1') {
-        authenticationStatus = AuthenticationStatus.authenticated;
         return const AuthenticationState.authenticated(User(id: '1'));
       } else {
-        authenticationStatus = AuthenticationStatus.unauthenticated;
         return const AuthenticationState.unauthenticated();
       }
     }
