@@ -19,11 +19,9 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: TextButton(
           onPressed: () {
-            context.read<AuthenticationBloc>().add(
-                  const AuthenticationStatusChanged(
-                    status: AuthenticationStatus.unauthenticated,
-                  ),
-                );
+            context
+                .read<AuthenticationBloc>()
+                .add(AuthenticationLogoutRequested());
             // HomePageRouter().go(context);
           },
           child: const Text('nav'),

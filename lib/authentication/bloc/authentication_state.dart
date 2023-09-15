@@ -17,10 +17,14 @@ class AuthenticationState extends Equatable {
   @override
   List<Object> get props => [status, user];
 
-  static AuthenticationState? fromJson(Map<String, dynamic> json) {
-    if (json['status'] != null) {
-      if (json['status'].toString() == '1') {
-        return const AuthenticationState.authenticated(User(id: '1'));
+  static AuthenticationState? fromJson(Map<String, dynamic> jsonData) {
+    if (jsonData['status'] != null) {
+      if (jsonData['status'].toString() == '1') {
+        var user = '-';
+        if (jsonData['userId'] != null) {
+          user = jsonData['userId'].toString();
+        }
+        return AuthenticationState.authenticated(User(id: user));
       } else {
         return const AuthenticationState.unauthenticated();
       }
@@ -31,6 +35,7 @@ class AuthenticationState extends Equatable {
   static Map<String, dynamic>? toJson(AuthenticationState state) {
     return {
       'status': state.status == AuthenticationStatus.authenticated ? '1' : '0',
+      'userId': state.user.id,
     };
   }
 }
