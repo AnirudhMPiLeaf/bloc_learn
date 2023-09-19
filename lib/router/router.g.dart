@@ -14,7 +14,7 @@ List<RouteBase> get $appRoutes => [
     ];
 
 RouteBase get $noInternetPageRouter => GoRouteData.$route(
-      path: '/noInternet',
+      path: '/no-internet',
       factory: $NoInternetPageRouterExtension._fromState,
     );
 
@@ -23,7 +23,7 @@ extension $NoInternetPageRouterExtension on NoInternetPageRouter {
       NoInternetPageRouter();
 
   String get location => GoRouteData.$location(
-        '/noInternet',
+        '/no-internet',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -1,7 +1,16 @@
 {
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
+  "@@locale": "en",
+  "counterAppBarTitle": "Counter",
+  "@counterAppBarTitle": {
+    "description": "Text shown in the AppBar of the Counter Page"
+  },
+  "loginX": "login {x}",
+  "@loginX": {
+    "placeholders": {
+      "x": {
+        "type": "String"
+      }
     }
+  },
+  "nav": "nav"
 }

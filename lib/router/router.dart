@@ -64,7 +64,7 @@ class AppRoute {
   );
 }
 
-@TypedGoRoute<NoInternetPageRouter>(path: '/noInternet')
+@TypedGoRoute<NoInternetPageRouter>(path: '/no-internet')
 class NoInternetPageRouter extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
