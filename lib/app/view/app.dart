@@ -1,6 +1,8 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc_learn/app/cubit/connectivity_cubit.dart';
+import 'package:bloc_learn/app/cubit/theme_cubit.dart';
 import 'package:bloc_learn/authentication/bloc/authentication_bloc.dart';
+import 'package:bloc_learn/helpers/theme.dart';
 import 'package:bloc_learn/l10n/l10n.dart';
 import 'package:bloc_learn/login/bloc/login_bloc.dart';
 import 'package:bloc_learn/onboarding/cubit/onboarding_cubit.dart';
@@ -38,6 +40,10 @@ class App extends StatelessWidget {
           ),
           BlocProvider<ConnectivityCubit>(
             create: (context) => ConnectivityCubit(),
+            lazy: false,
+          ),
+          BlocProvider<ThemeCubit>(
+            create: (context) => ThemeCubit(),
             lazy: false,
           ),
           BlocProvider<LoginBloc>(
@@ -84,20 +90,38 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-        colorScheme: ColorScheme.fromSwatch(
-          accentColor: const Color(0xFF13B9FF),
-        ),
-      ),
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      routeInformationParser: router.routeInformationParser,
-      routerDelegate: router.routerDelegate,
-      routeInformationProvider: router.routeInformationProvider,
-      builder: EasyLoading.init(),
+    return BlocBuilder<ThemeCubit, ThemeState>(
+      builder: (themeContext, themeState) {
+        return MaterialApp.router(
+          theme: CustomThemeData.light,
+          darkTheme: CustomThemeData.dark,
+          themeMode: themeState.isDark ? ThemeMode.dark : ThemeMode.light,
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routeInformationParser: router.routeInformationParser,
+          routerDelegate: router.routerDelegate,
+          routeInformationProvider: router.routeInformationProvider,
+          builder: (context, child) {
+            child = EasyLoading.init()(context, child);
+            EasyLoading.instance
+              ..displayDuration = const Duration(milliseconds: 2000)
+              ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+              ..loadingStyle = EasyLoadingStyle.custom
+              ..boxShadow = []
+              // ..indicatorSize = 100.0
+              // ..radius = 10.0
+              // ..progressColor = Colors.yellow
+              ..backgroundColor = Colors.transparent
+              ..indicatorColor = Colors.transparent
+              ..textColor = Colors.black
+              // ..maskColor = Colors.blue.withOpacity(0.5)
+              ..userInteractions = true
+              ..dismissOnTap = false;
+            return child;
+          },
+        );
+      },
     );
   }
 }

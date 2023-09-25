@@ -1,6 +1,9 @@
+import 'package:bloc_learn/app/cubit/theme_cubit.dart';
 import 'package:bloc_learn/authentication/bloc/authentication_bloc.dart';
+import 'package:bloc_learn/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,14 +19,35 @@ class HomePage extends StatelessWidget {
         title: const Text('home'),
       ),
       body: Center(
-        child: TextButton(
-          onPressed: () {
-            context
-                .read<AuthenticationBloc>()
-                .add(AuthenticationLogoutRequested());
-            // HomePageRouter().go(context);
-          },
-          child: const Text('nav'),
+        child: Column(
+          children: [
+            TextButton(
+              onPressed: () {
+                EasyLoading.show(
+                  maskType: EasyLoadingMaskType.clear,
+                  status: 'Err0r',
+                  indicator: const CircularProgressIndicator.adaptive(),
+                  dismissOnTap: true,
+                );
+                context
+                    .read<AuthenticationBloc>()
+                    .add(AuthenticationLogoutRequested());
+                HomePageRouter().go(context);
+              },
+              child: const Text('nav'),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<ThemeCubit>().toggleDarkMode();
+                HomePageRouter().go(context);
+              },
+              child: BlocBuilder<ThemeCubit, ThemeState>(
+                builder: (context, state) {
+                  return Text('theme ${state.isDark}');
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
