@@ -1,9 +1,5 @@
 {
   "@@locale": "es",
-  "counterAppBarTitle": "Contador",
-  "@counterAppBarTitle": {
-    "description": "Texto mostrado en la AppBar de la página del contador"
-  },
   "loginX": "login {x}",
   "@loginX": {
     "placeholders": {
@@ -12,5 +8,6 @@
       }
     }
   },
-  "nav": "nav"
+  "nav": "nav",
+  "noInternetConnection": "No internet connection"
 }

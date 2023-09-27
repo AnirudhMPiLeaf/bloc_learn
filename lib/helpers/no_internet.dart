@@ -1,3 +1,4 @@
+import 'package:bloc_learn/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class NoInternetPage extends StatelessWidget {
@@ -5,9 +6,10 @@ class NoInternetPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('No internet connection'),
+        title: Text(l10n.noInternetConnection),
       ),
     );
   }

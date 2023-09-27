@@ -2,6 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc_learn/app/cubit/connectivity_cubit.dart';
 import 'package:bloc_learn/app/cubit/theme_cubit.dart';
 import 'package:bloc_learn/authentication/bloc/authentication_bloc.dart';
+import 'package:bloc_learn/helpers/snackbar.dart';
 import 'package:bloc_learn/helpers/theme.dart';
 import 'package:bloc_learn/l10n/l10n.dart';
 import 'package:bloc_learn/login/bloc/login_bloc.dart';
@@ -77,6 +78,7 @@ class AppView extends StatefulWidget {
 
 class _AppViewState extends State<AppView> {
   late final GoRouter router;
+
   @override
   void initState() {
     router = AppRoute(
@@ -86,6 +88,11 @@ class _AppViewState extends State<AppView> {
       ),
     ).router;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -102,6 +109,7 @@ class _AppViewState extends State<AppView> {
           routeInformationParser: router.routeInformationParser,
           routerDelegate: router.routerDelegate,
           routeInformationProvider: router.routeInformationProvider,
+          scaffoldMessengerKey: SnackBarHelper.key,
           builder: (context, child) {
             child = EasyLoading.init()(context, child);
             EasyLoading.instance

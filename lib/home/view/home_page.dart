@@ -1,9 +1,12 @@
 import 'package:bloc_learn/app/cubit/theme_cubit.dart';
 import 'package:bloc_learn/authentication/bloc/authentication_bloc.dart';
+import 'package:bloc_learn/helpers/assets.dart';
+import 'package:bloc_learn/helpers/colors.dart';
+import 'package:bloc_learn/helpers/loading.dart';
+import 'package:bloc_learn/helpers/snackbar.dart';
 import 'package:bloc_learn/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -23,12 +26,7 @@ class HomePage extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () {
-                EasyLoading.show(
-                  maskType: EasyLoadingMaskType.clear,
-                  status: 'Err0r',
-                  indicator: const CircularProgressIndicator.adaptive(),
-                  dismissOnTap: true,
-                );
+                LoadingHelper.showLoading();
                 context
                     .read<AuthenticationBloc>()
                     .add(AuthenticationLogoutRequested());
@@ -39,13 +37,31 @@ class HomePage extends StatelessWidget {
             TextButton(
               onPressed: () {
                 context.read<ThemeCubit>().toggleDarkMode();
+                SnackBarHelper.showSnackbar(
+                  Text(
+                    context.read<ThemeCubit>().state.isDark ? 'dark' : 'light',
+                  ),
+                  backgroundColor: context.read<ThemeCubit>().state.isDark
+                      ? AppColors.baseColorLight
+                      : AppColors.baseColorDark,
+                );
                 HomePageRouter().go(context);
               },
               child: BlocBuilder<ThemeCubit, ThemeState>(
                 builder: (context, state) {
-                  return Text('theme ${state.isDark}');
+                  return Text(
+                    'theme ${state.isDark}',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  );
                 },
               ),
+            ),
+            BlocBuilder<ThemeCubit, ThemeState>(
+              builder: (context, state) {
+                return state.isDark
+                    ? Image.asset(Assets.assetsPlane)
+                    : const SizedBox();
+              },
             ),
           ],
         ),
