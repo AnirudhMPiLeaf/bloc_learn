@@ -60,11 +60,11 @@ class AppRoute {
         /// if biometric is enabled and it fails redirect to biometric page
         if (isBiometricEnabled) {
           var check = true;
-          if (isBiometricVerified) {
+          if (isBiometricVerified && !isBiometricFailed) {
             check = true;
           } else {
             check = false;
-            await biometricCubit.checkBiometric();
+          await biometricCubit.checkBiometric();
           }
           if (check) {
             return HomePageRouter().location;
