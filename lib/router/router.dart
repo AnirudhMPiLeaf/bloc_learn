@@ -1,6 +1,8 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:bloc_learn/app/cubit/biometric_cubit.dart';
 import 'package:bloc_learn/app/cubit/connectivity_cubit.dart';
 import 'package:bloc_learn/authentication/bloc/authentication_bloc.dart';
+import 'package:bloc_learn/helpers/biometric.dart';
 import 'package:bloc_learn/helpers/no_internet.dart';
 import 'package:bloc_learn/helpers/unfocus.dart';
 import 'package:bloc_learn/home/home.dart';
@@ -25,12 +27,16 @@ class AppRoute {
       final authBloc = context.read<AuthenticationBloc>();
       final onboardingCubit = context.read<OnboardingCubit>();
       final connectivityCubit = context.read<ConnectivityCubit>();
+      final biometricCubit = context.read<BiometricCubit>();
 
       final networkConnected =
           connectivityCubit.state.networkStatus == NetworkConnection.connected;
       final loggedIn =
           authBloc.state.status == AuthenticationStatus.authenticated;
       final isOnboardingShown = onboardingCubit.state.isOnboardingShown;
+      final isBiometricEnabled = biometricCubit.state.isBiometricEnabled;
+      final isBiometricFailed = biometricCubit.state.isFailed;
+      final isBiometricVerified = biometricCubit.state.isVerified;
 
       /// check just the matchedLocation in case there are query parameters
       final goingToLogin = state.matchedLocation == LoginPageRouter().location;
@@ -51,7 +57,23 @@ class AppRoute {
 
       /// the user is logged in and headed to /login, no need to login again
       if (loggedIn) {
-        return HomePageRouter().location;
+        /// if biometric is enabled and it fails redirect to biometric page
+        if (isBiometricEnabled) {
+          var check = true;
+          if (isBiometricVerified) {
+            check = true;
+          } else {
+            check = false;
+            await biometricCubit.checkBiometric();
+          }
+          if (check) {
+            return HomePageRouter().location;
+          } else {
+            return BiometricPageRouter().location;
+          }
+        } else {
+          return HomePageRouter().location;
+        }
       }
 
       /// no need to redirect at all
@@ -85,6 +107,14 @@ class LoginPageRouter extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const Unfocus(child: LoginPage());
+  }
+}
+
+@TypedGoRoute<BiometricPageRouter>(path: '/biometric')
+class BiometricPageRouter extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const Unfocus(child: BiometricPage());
   }
 }
 

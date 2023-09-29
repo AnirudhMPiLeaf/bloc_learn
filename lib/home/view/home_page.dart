@@ -1,6 +1,8 @@
+import 'package:bloc_learn/app/cubit/biometric_cubit.dart';
 import 'package:bloc_learn/app/cubit/theme_cubit.dart';
 import 'package:bloc_learn/authentication/bloc/authentication_bloc.dart';
 import 'package:bloc_learn/helpers/assets.dart';
+import 'package:bloc_learn/helpers/biometric.dart';
 import 'package:bloc_learn/helpers/colors.dart';
 import 'package:bloc_learn/helpers/loading.dart';
 import 'package:bloc_learn/helpers/snackbar.dart';
@@ -55,6 +57,18 @@ class HomePage extends StatelessWidget {
                   );
                 },
               ),
+            ),
+            BlocBuilder<BiometricCubit, BiometricState>(
+              builder: (context, state) {
+                return Switch.adaptive(
+                  value: state.isBiometricEnabled,
+                  onChanged: (isEnabled) {
+                    context
+                        .read<BiometricCubit>()
+                        .toggleAuth(isEnabled: isEnabled);
+                  },
+                );
+              },
             ),
             BlocBuilder<ThemeCubit, ThemeState>(
               builder: (context, state) {

@@ -1,7 +1,11 @@
 import 'package:bloc_learn/helpers/colors.dart';
+import 'package:bloc_learn/helpers/values.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SnackBarHelper {
+  SnackBarHelper._();
+
   static GlobalKey<ScaffoldMessengerState> key =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -16,13 +20,19 @@ class SnackBarHelper {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          duration: duration ?? const Duration(milliseconds: 500),
+          duration:
+              duration ?? const Duration(milliseconds: AppValues.lowDuration),
           content: Container(
-            height: height ?? 100,
+            height: height ?? AppValues.snackbarHeight,
             alignment: alignment ?? Alignment.center,
             child: content,
           ),
-          backgroundColor: backgroundColor ?? AppColors.baseColorDark,
+          margin: EdgeInsets.only(
+            bottom: ScreenUtil().screenHeight - 100,
+            left: 10,
+            right: 10,
+          ),
+          backgroundColor: backgroundColor ?? AppColors.transparentColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         ),

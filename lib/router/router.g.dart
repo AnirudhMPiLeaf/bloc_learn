@@ -10,6 +10,7 @@ List<RouteBase> get $appRoutes => [
       $noInternetPageRouter,
       $onboardingPageRouter,
       $loginPageRouter,
+      $biometricPageRouter,
       $homePageRouter,
     ];
 
@@ -69,6 +70,29 @@ extension $LoginPageRouterExtension on LoginPageRouter {
 
   String get location => GoRouteData.$location(
         '/login',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $biometricPageRouter => GoRouteData.$route(
+      path: '/biometric',
+      factory: $BiometricPageRouterExtension._fromState,
+    );
+
+extension $BiometricPageRouterExtension on BiometricPageRouter {
+  static BiometricPageRouter _fromState(GoRouterState state) =>
+      BiometricPageRouter();
+
+  String get location => GoRouteData.$location(
+        '/biometric',
       );
 
   void go(BuildContext context) => context.go(location);

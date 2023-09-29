@@ -2,6 +2,8 @@ import 'package:bloc_learn/helpers/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomThemeData {
+  CustomThemeData._();
+
   static ThemeData get light {
     return ThemeData(
       useMaterial3: true,
@@ -65,7 +67,6 @@ class CustomThemeData {
           fontWeight: FontWeight.w500,
           color: Colors.white,
         ),
-        
       ),
     );
   }
